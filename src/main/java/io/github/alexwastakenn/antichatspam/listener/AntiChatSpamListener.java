@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class PlayerActionListener implements Listener {
+public class AntiChatSpamListener implements Listener {
 
-  private final HashMap<UUID, Integer> messageTracker = new HashMap<>();
-  private final HashMap<UUID, Integer> mutedPlayers = new HashMap<>();
+  private final ConcurrentHashMap<UUID, Integer> messageTracker = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<UUID, Integer> mutedPlayers = new ConcurrentHashMap<>();
 
   public void PlayerSentMessageEvent(AsyncChatEvent event) {
     /*
@@ -24,16 +24,16 @@ public class PlayerActionListener implements Listener {
 
     /*
      * Anonymous async method to run on the event fire.
-     * Gets the playerUniqueId.
-     * Voids if the player has bypass permissions.
-     * If the messageTracker map does not contain the playerUniqueId, put the new playerUniqueId into the messageTracker map.
-     * If the messageTracker map contains the playerUniqueId, increment its value until it reaches integer 3.
-     * Then, add the playerUniqueId to the mutedPlayer map and
-     * remove the playerUniqueId from the messageTracker map and cancel the event.
      */
     new Thread(() -> {
+      /*
+       * Gets the playerUniqueId.
+       */
       @NotNull Player player = event.getPlayer();
       @NotNull UUID playerUniqueId = player.getUniqueId();
+      /*
+       * Voids if the player has bypass permissions.
+       */
       if (player.isOp()) {
           return;
       }
@@ -43,14 +43,27 @@ public class PlayerActionListener implements Listener {
         event.setCancelled(true);
       }
 
+      /*
+       * If the messageTracker map does not contain the playerUniqueId,
+       * put the new playerUniqueId into the messageTracker map.
+       */
       if (!messageTracker.containsKey(playerUniqueId)) {
         messageTracker.put(playerUniqueId, 1);
       }
 
+      /*
+       * If the messageTracker map contains the playerUniqueId,
+       * increment its value until it reaches integer 3.
+       */
       if (messageTracker.containsKey(playerUniqueId) && messageTracker.get(playerUniqueId) != 3) {
         messageTracker.merge(playerUniqueId, messageTracker.get(playerUniqueId), (x, y) -> x + 1);
       }
 
+      /*
+       * Add the playerUniqueId to the mutedPlayer map,
+       * remove the playerUniqueId from the messageTracker map
+       * and cancel the event.
+       */
       if (messageTracker.get(playerUniqueId) == 3) {
         mutedPlayers.put(playerUniqueId, 5);
         messageTracker.remove(playerUniqueId);

@@ -1,9 +1,13 @@
 package io.github.alexwastakenn.antichatspam;
 
+import io.github.alexwastakenn.antichatspam.commands.AntiChatSpamCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import io.github.alexwastakenn.antichatspam.listener.PlayerActionListener;
-import org.jetbrains.annotations.NotNull;
+import io.github.alexwastakenn.antichatspam.listener.AntiChatSpamListener;
+
+import java.util.Objects;
+
+//TODO create config, depend on it
 
 public final class AntiChatSpam extends JavaPlugin {
 
@@ -11,15 +15,16 @@ public final class AntiChatSpam extends JavaPlugin {
    * Status of the plugin, to check if it's disabled or enabled.
    */
   private static boolean acsEnabled = true;
-  private final PluginManager manager = getServer().getPluginManager();
 
   @Override
   public void onEnable() {
     try {
-      manager.registerEvents(new @NotNull PlayerActionListener(), this);
+      Objects.requireNonNull(getCommand("antichatspam")).setExecutor(new AntiChatSpamCommand());
+      getServer().getPluginManager().registerEvents(new AntiChatSpamListener(), this);
 
       System.out.println("[AntiChatSpam] Plugin loaded. If any issues arise contact alex#6890 @ discord.");
-    } catch (Exception e) {
+    } catch (Exception exception) {
+      exception.printStackTrace();
       System.out.println("[AntiChatSpam] Plugin failed to load due to an error.\nPlease contact alex#6890 @ discord.");
     }
   }

@@ -1,14 +1,14 @@
 package io.github.alexwastakenn.antichatspam.commands;
 
 import io.github.alexwastakenn.antichatspam.AntiChatSpam;
-import org.bukkit.ChatColor;
+import io.github.alexwastakenn.antichatspam.messages.AntiChatSpamMessages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class AntiChatSpamCommand implements CommandExecutor {
+public class AntiChatSpamCommand implements CommandExecutor, AntiChatSpamMessages {
 
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -32,7 +32,7 @@ public class AntiChatSpamCommand implements CommandExecutor {
      * returns a custom usage message to the player.
      */
     if (args.length != 1) {
-      player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " " + ChatColor.GREEN + " Too many arguments.");
+      tooManyArgumentsMessage(player);
       return true;
     }
 
@@ -46,8 +46,7 @@ public class AntiChatSpamCommand implements CommandExecutor {
     } else if (args[0].equals("off")) {
       enabled = false;
     } else {
-      player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " "
-          + ChatColor.GREEN + " Invalid arguments, please use either on or off");
+      invalidArgumentsMessage(player);
       return true;
     }
 
@@ -58,17 +57,17 @@ public class AntiChatSpamCommand implements CommandExecutor {
      */
     if (AntiChatSpam.isPluginEnabled()) {
       if (enabled) {
-        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " " + ChatColor.GREEN + " The plugin is already enabled.");
+        alreadyEnabledMessage(player);
       } else {
         AntiChatSpam.enablePlugin(false);
-        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " " + ChatColor.GREEN + " The plugin has been disabled.");
+        hasBeenDisabledMessage(player, true);
       }
     } else {
       if (!enabled) {
-        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " " + ChatColor.GREEN + " The plugin is already disabled.");
+        alreadyDisabledMessage(player);
       } else {
         AntiChatSpam.enablePlugin(true);
-        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[AntiChatSpam]" + ChatColor.RESET + " " + ChatColor.GREEN + " The plugin has been enabled.");
+        hasBeenEnabledMessage(player, true);
       }
     }
     return true;
