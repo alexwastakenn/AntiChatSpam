@@ -3,6 +3,8 @@ package io.github.alexwastakenn.antichatspam.configs;
 import io.github.alexwastakenn.antichatspam.AntiChatSpam;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public final class AntiChatSpamConfig {
@@ -19,7 +21,7 @@ public final class AntiChatSpamConfig {
 
   @Getter private final int stopPlayerTrackingInTicks = getFromConfig("stoptrackingin") * serverTps;
 
-  private int getFromConfig(String path) {
+  private int getFromConfig(@NotNull String path) {
     assert config.getInt(path) != 0;
     return config.getInt(path);
   }
