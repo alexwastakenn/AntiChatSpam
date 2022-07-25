@@ -47,8 +47,7 @@ public interface AntiChatSpamMessages {
     player.sendMessage(prefix + ChatColor.GREEN + " You've been muted for 5.0 seconds.");
   }
 
-  default void mutedRemainderMessage(@NotNull Player player, @NotNull Double remainder) {
-    player.sendMessage(prefix + ChatColor.GREEN + " You're still muted for " + decimalFormat.format(remainder) + " seconds.");
+  default void mutedRemainderMessage(@NotNull Player player, double remainder) {
+    player.sendMessage(prefix + ChatColor.GREEN + " You're still muted for " + decimalFormat.format(remainder / 20) + " seconds.");
   }
-
 }

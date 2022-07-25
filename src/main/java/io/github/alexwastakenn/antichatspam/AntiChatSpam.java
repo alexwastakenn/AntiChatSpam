@@ -1,37 +1,36 @@
 package io.github.alexwastakenn.antichatspam;
 
 import io.github.alexwastakenn.antichatspam.commands.AntiChatSpamCommand;
-import org.bukkit.plugin.PluginManager;
+import io.github.alexwastakenn.antichatspam.events.AntiChatSpamEvents;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import io.github.alexwastakenn.antichatspam.listener.AntiChatSpamListener;
-
 import java.util.Objects;
-
-//TODO create config, depend on it
+import java.util.logging.Level;
 
 public final class AntiChatSpam extends JavaPlugin {
 
-  /*
-   * Status of the plugin, to check if it's disabled or enabled.
-   */
   private static boolean acsEnabled = true;
 
   @Override
   public void onEnable() {
-    try {
-      Objects.requireNonNull(getCommand("antichatspam")).setExecutor(new AntiChatSpamCommand());
-      getServer().getPluginManager().registerEvents(new AntiChatSpamListener(), this);
+    this.getLogger()
+        .log(
+            Level.INFO,
+            "[AntiChatSpam] Plugin loaded. If any issues arise contact alex#6890 @ discord.");
 
-      System.out.println("[AntiChatSpam] Plugin loaded. If any issues arise contact alex#6890 @ discord.");
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      System.out.println("[AntiChatSpam] Plugin failed to load due to an error.\nPlease contact alex#6890 @ discord.");
-    }
+    //saveDefaultConfig();
+
+    Objects.requireNonNull(getCommand("antichatspam")).setExecutor(new AntiChatSpamCommand());
+
+    Bukkit.getServer().getPluginManager().registerEvents(new AntiChatSpamEvents(), this);
   }
 
   @Override
   public void onDisable() {
-    System.out.println("[AntiChatSpam] Plugin unloaded. Either the server crashed or it was shut down");
+    this.getLogger()
+        .log(
+            Level.SEVERE,
+            "[AntiChatSpam] Plugin unloaded. Either the server crashed or it was shut down");
   }
 
   /*

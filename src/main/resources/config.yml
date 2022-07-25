@@ -1,0 +1,11 @@
+antichatspam:
+  # TPS (ticks per second) of your server
+  tickspersecond: 20
+  # Mute player at number of messages
+  messagesuntilmute: 3
+  # Unmute player in number of seconds
+  unmutein: 5
+  # Stop tracking player messages after number of seconds
+  stoptrackingin: 2
+
+

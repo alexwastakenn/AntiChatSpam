@@ -4,3 +4,7 @@ main: io.github.alexwastakenn.antichatspam.AntiChatSpam
 api-version: 1.19
 authors: [ alexwastakenn ]
 description: Paper plugin that moderates spamming in chat
+commands:
+  antichatspam:
+    usage: <command>
+    description: Toggles the AntiChatSpam features.
