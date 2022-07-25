@@ -12,34 +12,20 @@ public class AntiChatSpamCommand implements CommandExecutor, AntiChatSpamMessage
 
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-    /*
-     * Cancels the command if the sender isn't a player.
-     */
+
     if (!(sender instanceof Player player)) {
       return true;
     }
 
-    /*
-     * Cancels the command if there are no arguments,
-     * returns an info message to the player.
-     */
     if (args.length == 0) {
       return true;
     }
 
-    /*
-     * Cancels the command if there's more than one argument,
-     * returns a custom usage message to the player.
-     */
     if (args.length != 1) {
       tooManyArgumentsMessage(player);
       return true;
     }
 
-    /*
-     * Cancels the command if the arguments are not either "on" for true or "off" for false.
-     * Initializes boolean variable "enabled" for further use.
-     */
     boolean enabled;
     if (args[0].equals("on")) {
       enabled = true;
@@ -50,11 +36,6 @@ public class AntiChatSpamCommand implements CommandExecutor, AntiChatSpamMessage
       return true;
     }
 
-    /*
-     * If the plugin is already enabled or disabled,
-     * returns a message to the player about the status,
-     * otherwise it enables or disables the plugin.
-     */
     if (AntiChatSpam.isPluginEnabled()) {
       if (enabled) {
         alreadyEnabledMessage(player);

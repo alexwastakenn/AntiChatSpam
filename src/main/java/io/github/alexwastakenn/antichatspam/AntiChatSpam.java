@@ -13,16 +13,13 @@ public final class AntiChatSpam extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    saveDefaultConfig();
+    Objects.requireNonNull(getCommand("antichatspam")).setExecutor(new AntiChatSpamCommand());
+    Bukkit.getServer().getPluginManager().registerEvents(new AntiChatSpamEvents(), this);
     this.getLogger()
         .log(
             Level.INFO,
             "[AntiChatSpam] Plugin loaded. If any issues arise contact alex#6890 @ discord.");
-
-    //saveDefaultConfig();
-
-    Objects.requireNonNull(getCommand("antichatspam")).setExecutor(new AntiChatSpamCommand());
-
-    Bukkit.getServer().getPluginManager().registerEvents(new AntiChatSpamEvents(), this);
   }
 
   @Override
